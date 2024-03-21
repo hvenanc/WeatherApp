@@ -9,7 +9,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pdm.weatherapp.ui.theme.WeatherAppTheme
 
-class LoginActivity : ComponentActivity() {
+class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -44,81 +43,91 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginPage()
+                    RegisterPage()
                 }
             }
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun LoginPage(modifier: Modifier = Modifier) {
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    val activity = LocalContext.current as? Activity
-    Column(
-        modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+fun RegisterPage(modifier: Modifier = Modifier) {
 
-    ) {
+    var nome by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var senha by rememberSaveable { mutableStateOf("") }
+    var confirmaSenha by rememberSaveable { mutableStateOf("") }
+    val activity = LocalContext.current as? Activity
+
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(16.dp)
+    ){
         Text(
-            text = "Bem-vindo/a!",
-            fontSize = 24.sp
+            text = "Crie sua Conta",
+            fontSize = 24.sp)
+
+        Spacer(modifier = Modifier.size(24.dp))
+        OutlinedTextField(
+            value = nome,
+            label = { Text(text = "Digite seu nome")},
+            modifier = Modifier.fillMaxWidth(),
+            onValueChange = {nome = it}
         )
         Spacer(modifier = Modifier.size(24.dp))
         OutlinedTextField(
             value = email,
-            label = { Text(text = "Digite seu e-mail") },
+            label = {Text(text = "Digite seu e-mail")},
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { email = it }
+            onValueChange = {email = it}
         )
         Spacer(modifier = Modifier.size(24.dp))
         OutlinedTextField(
-            value = password,
-            label = { Text(text = "Digite sua senha") },
+            value = senha,
+            label = {Text(text = "Digite sua senha")},
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { password = it },
+            onValueChange = {senha = it},
             visualTransformation = PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.size(24.dp))
-        Row(modifier = modifier) {
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    Toast.makeText(activity, "Login OK!", Toast.LENGTH_LONG).show()
-                    activity?.startActivity(
-                        Intent(activity, MainActivity::class.java).setFlags(
-                            FLAG_ACTIVITY_SINGLE_TOP
-                        )
+        OutlinedTextField(
+            value = confirmaSenha,
+            label = {Text(text = "Confirme sua senha")},
+            modifier = Modifier.fillMaxWidth(),
+            onValueChange = {confirmaSenha = it},
+            visualTransformation = PasswordVisualTransformation()
+        )
+        Spacer(modifier = Modifier.size(24.dp))
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                Toast.makeText(activity, "Conta Criada", Toast.LENGTH_LONG).show()
+                activity?.startActivity(
+                    Intent(activity, LoginActivity::class.java).setFlags(
+                        FLAG_ACTIVITY_SINGLE_TOP
                     )
-                },
-                enabled = email.isNotEmpty() && password.isNotEmpty()
-            ) {
-                Text("Login")
-            }
+                )
+            },
+            enabled = nome.isNotEmpty() && email.isNotEmpty() && senha == confirmaSenha
+        ) {
+            Text(
+                text = "Criar Conta"
+            )
         }
-       Spacer(modifier = Modifier.size(12.dp))
-       Row(modifier = modifier) {
-           Button(
-               onClick = { email = ""; password = "" }
-           ) {
-               Text("Limpar")
-           }
-           Button(
-               onClick = {
-                   activity?.startActivity(
-                       Intent(activity, RegisterActivity::class.java).setFlags(
-                           FLAG_ACTIVITY_SINGLE_TOP
-                       )
-                   )
-               }
-           ) {
-               Text(
-                   "Criar Conta"
-               )
-           }
-       }
+        Spacer(modifier = Modifier.size(12.dp))
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                nome = ""; email = ""; senha = ""; confirmaSenha= ""
+            }
+        )
+        {
+            Text(
+                text = "Limpar"
+            )
+        }
     }
 }
