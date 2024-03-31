@@ -16,8 +16,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.pdm.weatherapp.ui.CityDialog
 import com.pdm.weatherapp.ui.nav.BottomNavBar
 import com.pdm.weatherapp.ui.nav.MainNavHost
 import com.pdm.weatherapp.ui.theme.WeatherAppTheme
@@ -28,37 +33,45 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            val viewModel : MainViewModel by viewModels()
+            val viewModel: MainViewModel by viewModels()
+            var showDialog by remember {
+                mutableStateOf(false)
+            }
             WeatherAppTheme {
-               Scaffold(
-                   topBar = {
-                       TopAppBar(
-                           title = { Text(text = "Bem-Vindo") },
-                           actions = {
-                               IconButton(onClick = { finish() }) {
-                                   Icon(
-                                       imageVector = Icons.Default.ExitToApp,
-                                       contentDescription = "Localizad description"
-                                   )
-                               }
-                           }
-                       )
+                if (showDialog) CityDialog(
+                    onDismiss = { showDialog = false },
+                    onConfirm = { city ->
+                        if (city.isNotBlank()) viewModel.add(city)
+                        showDialog = false
+                    })
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text(text = "Bem-Vindo") },
+                            actions = {
+                                IconButton(onClick = { finish() }) {
+                                    Icon(
+                                        imageVector = Icons.Default.ExitToApp,
+                                        contentDescription = "Localizad description"
+                                    )
+                                }
+                            }
+                        )
 
-                   },
-                   bottomBar = {
-                       BottomNavBar(navController = navController)
-                   },
-                   floatingActionButton = {
-                       FloatingActionButton(onClick = {}) {
-                           Icon(Icons.Default.Add, contentDescription = "Adcionar")
-                       }
-                   }
-               ) {
-                    innerPadding -> 
+                    },
+                    bottomBar = {
+                        BottomNavBar(navController = navController)
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(onClick = {showDialog = true}) {
+                            Icon(Icons.Default.Add, contentDescription = "Adcionar")
+                        }
+                    }
+                ) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
                         MainNavHost(navController = navController, viewModel = viewModel)
                     }
-               }
+                }
             }
         }
     }
