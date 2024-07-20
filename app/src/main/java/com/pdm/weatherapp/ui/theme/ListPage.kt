@@ -1,6 +1,7 @@
 package com.pdm.weatherapp.ui.theme
 
 import android.app.Activity
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -29,8 +30,11 @@ import com.pdm.weatherapp.MainViewModel
 
 
 @Composable
-fun ListPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
-    val activity = LocalContext.current as? Activity
+fun ListPage(
+    modifier: Modifier = Modifier,
+    viewModel: MainViewModel,
+    context: Context,
+) {
     val cityList = viewModel.cities
     LazyColumn(
         modifier = Modifier
@@ -40,11 +44,11 @@ fun ListPage(modifier: Modifier = Modifier, viewModel: MainViewModel) {
         items(cityList) { city ->
             CityItem(city = city,
                 onClick = {
-                    Toast.makeText(activity, city.name, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, city.name, Toast.LENGTH_LONG).show()
                 },
                 onClose = {
                     viewModel.remove(city)
-                    Toast.makeText(activity, city.name + " removida", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, city.name + " removida", Toast.LENGTH_LONG).show()
                 }
             )
 
