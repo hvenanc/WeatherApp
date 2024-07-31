@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.pdm.weatherapp.ui.CityDialog
 import com.pdm.weatherapp.ui.nav.BottomNavBar
 import com.pdm.weatherapp.ui.nav.BottomNavItem
@@ -62,7 +64,10 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             title = { Text(text = "Bem-Vindo") },
                             actions = {
-                                IconButton(onClick = { finish() }) {
+                                IconButton(onClick = {
+                                    Firebase.auth.signOut()
+                                    finish()
+                                }) {
                                     Icon(
                                         imageVector = Icons.Default.ExitToApp,
                                         contentDescription = "Localizad description"

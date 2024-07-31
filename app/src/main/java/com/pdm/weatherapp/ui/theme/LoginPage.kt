@@ -2,6 +2,7 @@ package com.pdm.weatherapp.ui.theme
 
 import android.app.Activity
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.pdm.weatherapp.MainActivity
 import com.pdm.weatherapp.RegisterActivity
 
@@ -67,12 +70,19 @@ fun LoginPage(modifier: Modifier = Modifier) {
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF138d75)),
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    Toast.makeText(activity, "Login OK!", Toast.LENGTH_LONG).show()
-                    activity?.startActivity(
-                        Intent(activity, MainActivity::class.java).setFlags(
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        )
-                    )
+                    Firebase.auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(activity!!) { task ->
+                            if(task.isSuccessful) {
+                                activity.startActivity(
+                                    Intent(activity, MainActivity::class.java).setFlags(
+                                        FLAG_ACTIVITY_SINGLE_TOP
+                                    )
+                                )
+                                Toast.makeText(activity, "Bem-Vindo!", Toast.LENGTH_LONG).show()
+                            } else {
+                                Toast.makeText(activity, "Falha ao Logar", Toast.LENGTH_LONG).show()
+                            }
+                        }
                 },
                 enabled = email.isNotEmpty() && password.isNotEmpty()
             ) {
