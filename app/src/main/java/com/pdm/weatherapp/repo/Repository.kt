@@ -1,6 +1,7 @@
 package com.pdm.weatherapp.repo
 
 import com.google.android.gms.maps.model.LatLng
+import com.pdm.weatherapp.api.WeatherService
 import com.pdm.weatherapp.db.fb.FBDatabase
 import com.pdm.weatherapp.model.City
 import com.pdm.weatherapp.model.User
@@ -8,6 +9,7 @@ import com.pdm.weatherapp.model.User
 class Repository (private var listener: Listener) : FBDatabase.Listener {
 
     private var fbDb = FBDatabase (this)
+    private var weatherService =  WeatherService()
 
     interface Listener {
         fun onUserLoaded(user: User)
@@ -16,11 +18,23 @@ class Repository (private var listener: Listener) : FBDatabase.Listener {
     }
 
     fun addCity(name: String) {
-        fbDb.add(City(name, "", LatLng(0.0, 0.0)))
+        weatherService.getLocation(name) { lat, lng ->
+            fbDb.add(City(
+                name = name,
+                weather = "Loading..",
+                location = LatLng(lat?:0.0, lng?:0.0)
+            ))
+        }
+
     }
 
     fun addCity(lat: Double, lng: Double) {
-        fbDb.add(City("Cidade@$lat:$lng", null, LatLng(lat, lng)))
+        weatherService.getName(lat, lng) {name ->
+            fbDb.add(City(
+                name = name?: "NOT_FOUND",
+                location = LatLng(lat, lng)
+            ))
+        }
     }
 
     fun remove(city: City) {

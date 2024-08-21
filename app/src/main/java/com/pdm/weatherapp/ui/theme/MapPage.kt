@@ -19,8 +19,6 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.pdm.weatherapp.MainViewModel
-import com.pdm.weatherapp.db.fb.FBDatabase
-import com.pdm.weatherapp.model.City
 import com.pdm.weatherapp.repo.Repository
 
 //@Preview(showBackground = true)
@@ -39,9 +37,6 @@ fun MapPage(
                     PackageManager.PERMISSION_GRANTED
         )
     }
-    val recife = LatLng(-8.05, -34.9)
-    val caruaru = LatLng(-8.27, -35.98)
-    val joaopessoa = LatLng(-7.12, -34.84)
 
     GoogleMap(
         modifier = Modifier.fillMaxWidth(),
@@ -62,31 +57,5 @@ fun MapPage(
                 )
             }
         }
-
-        Marker(
-            state = MarkerState(position = recife),
-            title = "Recife",
-            snippet = "Marcador de Recife",
-            icon = BitmapDescriptorFactory.defaultMarker(
-                BitmapDescriptorFactory.HUE_BLUE
-            )
-        )
-
-        Marker(
-            state = MarkerState(position = caruaru),
-            title = "Caruaru",
-            snippet = "Marcador de Caruaru",
-            icon = BitmapDescriptorFactory.defaultMarker(
-                BitmapDescriptorFactory.HUE_GREEN
-            )
-        )
-
-        Marker(
-            state = MarkerState(position = joaopessoa),
-            title = "João Pessoa",
-            snippet = "Marcador de João Pessoa",
-            icon = BitmapDescriptorFactory.defaultMarker(
-                BitmapDescriptorFactory.HUE_YELLOW)
-        )
     }
 }
