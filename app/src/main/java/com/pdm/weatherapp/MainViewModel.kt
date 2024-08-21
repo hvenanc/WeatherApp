@@ -1,5 +1,6 @@
 package com.pdm.weatherapp
 
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
@@ -10,14 +11,15 @@ import com.google.firebase.auth.auth
 import com.pdm.weatherapp.db.fb.FBDatabase
 import com.pdm.weatherapp.model.City
 import com.pdm.weatherapp.model.User
+import com.pdm.weatherapp.repo.Repository
 
-class MainViewModel : ViewModel(), FBDatabase.Listener {
-    private val _cities = getCities().toMutableStateList()
+class MainViewModel : ViewModel(), Repository.Listener {
+    private val _cities = mutableStateMapOf<String, City>()
     private val _user = mutableStateOf(User("Henrique", ""))
     val user : User
         get() = _user.value
     val cities : List<City>
-        get() = _cities
+        get() = _cities.values.toList()
 
     private var _loggedIn = mutableStateOf(false)
     val loggedIn: Boolean
@@ -39,14 +41,10 @@ class MainViewModel : ViewModel(), FBDatabase.Listener {
         _user.value = user
     }
     override fun onCityAdded(city: City) {
-        _cities.add(city)
+        _cities[city.name] = city
     }
     override fun onCityRemoved(city: City) {
-        _cities.remove(city)
+        _cities.remove(city.name)
     }
 
-}
-
-private fun getCities() = List(0) {i ->
-    City(name = "Cidade $i", weather = "Carregando o Clima...")
 }

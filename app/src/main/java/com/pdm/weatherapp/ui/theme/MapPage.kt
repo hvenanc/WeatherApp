@@ -21,6 +21,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.pdm.weatherapp.MainViewModel
 import com.pdm.weatherapp.db.fb.FBDatabase
 import com.pdm.weatherapp.model.City
+import com.pdm.weatherapp.repo.Repository
 
 //@Preview(showBackground = true)
 @Composable
@@ -28,7 +29,7 @@ fun MapPage(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel,
     context: Context,
-    fbDB : FBDatabase
+    repo : Repository
 ) {
     val camPosState = rememberCameraPositionState()
     val hasLocationPermission by remember {
@@ -45,7 +46,9 @@ fun MapPage(
     GoogleMap(
         modifier = Modifier.fillMaxWidth(),
         cameraPositionState = camPosState,
-        onMapLongClick = {fbDB.add(city = City("City "+it.latitude, weather = "", location = it))},
+        onMapLongClick = {
+                         repo.addCity(lat = it.latitude, lng = it.longitude)
+        },
         properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
         uiSettings = MapUiSettings(myLocationButtonEnabled = true)
         ) {

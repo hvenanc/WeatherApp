@@ -31,6 +31,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.pdm.weatherapp.db.fb.FBDatabase
 import com.pdm.weatherapp.model.City
+import com.pdm.weatherapp.repo.Repository
 import com.pdm.weatherapp.ui.CityDialog
 import com.pdm.weatherapp.ui.nav.BottomNavBar
 import com.pdm.weatherapp.ui.nav.BottomNavItem
@@ -56,13 +57,15 @@ class MainActivity : ComponentActivity() {
                     BottomNavItem.MapPage.route
             val launcher = rememberLauncherForActivityResult(contract =
                 ActivityResultContracts.RequestPermission(), onResult = {})
-            val fbDB = remember { FBDatabase (viewModel) }
+            val repo = remember { Repository (viewModel) }
+
 
             WeatherAppTheme {
                 if (showDialog) CityDialog(
                     onDismiss = { showDialog = false },
-                    onConfirm = { city ->
-                        if (city.isNotBlank()) fbDB.add(City(city, ""))
+                    onConfirm = { cityName ->
+                        if (cityName.isNotBlank())
+                            repo.addCity(cityName)
                         showDialog = false
                     })
                 Scaffold(
@@ -97,7 +100,7 @@ class MainActivity : ComponentActivity() {
                     Box(modifier = Modifier.padding(innerPadding)) {
                         launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         MainNavHost(navController = navController,
-                            viewModel = viewModel, context = context, fbDB = fbDB)
+                            viewModel = viewModel, context = context, repo = repo)
                     }
                 }
             }

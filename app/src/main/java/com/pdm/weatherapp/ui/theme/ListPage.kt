@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.pdm.weatherapp.MainViewModel
 import com.pdm.weatherapp.db.fb.FBDatabase
 import com.pdm.weatherapp.model.City
+import com.pdm.weatherapp.repo.Repository
 
 
 @Composable
@@ -33,7 +34,7 @@ fun ListPage(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel,
     context: Context,
-    fbDB : FBDatabase
+    repo : Repository
 ) {
     val cityList = viewModel.cities
     LazyColumn(
@@ -47,7 +48,7 @@ fun ListPage(
                     Toast.makeText(context, city.name, Toast.LENGTH_LONG).show()
                 },
                 onClose = {
-                    fbDB.remove(city)
+                    repo.remove(city)
                     Toast.makeText(context, city.name + " removida", Toast.LENGTH_LONG).show()
                 }
             )
@@ -83,7 +84,7 @@ fun CityItem(
             )
             Text(
                 modifier = Modifier,
-                text = city.weather,
+                text = city.weather.toString(),
                 fontSize = 16.sp
             )
         }
