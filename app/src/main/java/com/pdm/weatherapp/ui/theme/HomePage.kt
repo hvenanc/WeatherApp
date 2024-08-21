@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.pdm.weatherapp.MainViewModel
 import com.pdm.weatherapp.R
+import com.pdm.weatherapp.db.fb.FBDatabase
 
 //@Preview(showBackground = true)
 @Composable
@@ -24,6 +25,7 @@ fun HomePage(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel,
     context: Context,
+    fbDB : FBDatabase
 ) {
     Column(
         modifier = Modifier

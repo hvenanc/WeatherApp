@@ -29,6 +29,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.pdm.weatherapp.db.fb.FBDatabase
+import com.pdm.weatherapp.model.City
 import com.pdm.weatherapp.ui.CityDialog
 import com.pdm.weatherapp.ui.nav.BottomNavBar
 import com.pdm.weatherapp.ui.nav.BottomNavItem
@@ -41,6 +43,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val viewModel: MainViewModel by viewModels()
         setContent {
+            if (!viewModel.loggedIn) {
+                this.finish()
+            }
             val navController = rememberNavController()
             var showDialog by remember {
                 mutableStateOf(false)
@@ -51,12 +56,13 @@ class MainActivity : ComponentActivity() {
                     BottomNavItem.MapPage.route
             val launcher = rememberLauncherForActivityResult(contract =
                 ActivityResultContracts.RequestPermission(), onResult = {})
+            val fbDB = remember { FBDatabase (viewModel) }
 
             WeatherAppTheme {
                 if (showDialog) CityDialog(
                     onDismiss = { showDialog = false },
                     onConfirm = { city ->
-                        if (city.isNotBlank()) viewModel.add(city)
+                        if (city.isNotBlank()) fbDB.add(City(city, ""))
                         showDialog = false
                     })
                 Scaffold(
@@ -91,7 +97,7 @@ class MainActivity : ComponentActivity() {
                     Box(modifier = Modifier.padding(innerPadding)) {
                         launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         MainNavHost(navController = navController,
-                            viewModel = viewModel, context = context)
+                            viewModel = viewModel, context = context, fbDB = fbDB)
                     }
                 }
             }

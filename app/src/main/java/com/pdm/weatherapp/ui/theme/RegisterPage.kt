@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.pdm.weatherapp.LoginActivity
+import com.pdm.weatherapp.db.fb.FBDatabase
 
 @Preview(showBackground = true)
 @Composable
@@ -37,6 +39,7 @@ fun RegisterPage(modifier: Modifier = Modifier) {
     var senha by rememberSaveable { mutableStateOf("") }
     var confirmaSenha by rememberSaveable { mutableStateOf("") }
     val activity = LocalContext.current as? Activity
+    val fbDB = remember { FBDatabase() }
 
     Column(
         verticalArrangement = Arrangement.Center,
