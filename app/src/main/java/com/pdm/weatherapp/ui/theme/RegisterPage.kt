@@ -29,6 +29,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.pdm.weatherapp.LoginActivity
 import com.pdm.weatherapp.db.fb.FBDatabase
+import com.pdm.weatherapp.model.User
 
 @Preview(showBackground = true)
 @Composable
@@ -88,6 +89,7 @@ fun RegisterPage(modifier: Modifier = Modifier) {
                 Firebase.auth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(activity!!) { task ->
                         if(task.isSuccessful) {
+                            fbDB.register(User(nome, email))
                             Toast.makeText(activity,
                                 "Registro OK!", Toast.LENGTH_LONG).show()
                             activity.finish()
