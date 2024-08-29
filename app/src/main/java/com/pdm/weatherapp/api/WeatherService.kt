@@ -16,6 +16,19 @@ class WeatherService {
             .addConverterFactory(GsonConverterFactory.create()).build()
         weatherAPI = retrofitAPI.create(WeatherServiceAPI::class.java)
     }
+
+    private fun <T> enqueue(call: Call<T?>, onResponse: ((T?) -> Unit) ? = null) {
+        call.enqueue(object : Callback<T?> {
+            override fun onResponse(call: Call<T?>, response: Response<T?>) {
+                val obj: T? = response.body()
+                onResponse?.invoke(obj)
+            }
+
+            override fun onFailure(call: Call<T?>, t: Throwable) {
+                Log.w("Weather WARNING", "" + t.message)
+            }
+        })
+    }
     fun getName(lat: Double, lng: Double, onResponse : (String?) -> Unit ) {
         search("$lat,$lng") { loc -> onResponse (loc?.name) }
     }
@@ -23,18 +36,12 @@ class WeatherService {
                     onResponse: (lat:Double?, long:Double?) -> Unit) {
         search(name) { loc -> onResponse (loc?.lat, loc?.lon) }
     }
-    private fun search(query: String, onResponse : (Location?) -> Unit) {
-        val call: Call<List<Location>?> = weatherAPI.search(query)
-        call.enqueue(object : Callback<List<Location>?> {
-            override fun onResponse(call: Call<List<Location>?>,
-                                    response: Response<List<Location>?>
-            ) {
-                onResponse(response.body()?.get(0))
+    private fun search(query: String, onResponse : (APILocation?) -> Unit) {
+        val call: Call<List<APILocation>?> = weatherAPI.search(query)
+        enqueue(call = call) {
+            if (it != null) {
+                onResponse.invoke(it[0])
             }
-            override fun onFailure(call: Call<List<Location>?>,t: Throwable) {
-                Log.w("WeatherApp WARNING", "" + t.message)
-                onResponse(null)
-            }
-        })
+        }
     }
 }
