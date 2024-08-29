@@ -6,7 +6,7 @@ import com.google.android.gms.maps.model.LatLng
 
 data class City(
     val name: String,
-    var weather: String? = null,
+    var weather: Weather? = null,
     var location: LatLng? = null,
     val imgUrl: String? = null,
     val bitmap: Bitmap? = null

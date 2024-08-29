@@ -53,7 +53,7 @@ fun MapPage(
                 Marker(
                     state = MarkerState(position = it.location!!),
                     title = it.name,
-                    snippet = "${it.location}"
+                    snippet = it.weather?.desc?:"carregando...",
                 )
             }
         }

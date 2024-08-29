@@ -47,4 +47,9 @@ class MainViewModel : ViewModel(), Repository.Listener {
         _cities.remove(city.name)
     }
 
+    override fun onCityUpdated(city: City) {
+        _cities.remove(city.name)
+        _cities[city.name] = city.copy()
+    }
+
 }

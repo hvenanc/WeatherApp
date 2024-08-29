@@ -43,6 +43,9 @@ fun ListPage(
             .padding(8.dp)
     ) {
         items(cityList) { city ->
+            if (city.weather == null) {
+                repo.loadWeather(city)
+            }
             CityItem(city = city,
                 onClick = {
                     Toast.makeText(context, city.name, Toast.LENGTH_LONG).show()
@@ -84,7 +87,7 @@ fun CityItem(
             )
             Text(
                 modifier = Modifier,
-                text = city.weather.toString(),
+                text = city.weather?.desc?:"carregando...",
                 fontSize = 16.sp
             )
         }
