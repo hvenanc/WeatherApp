@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
@@ -58,6 +59,7 @@ class MainActivity : ComponentActivity() {
             val launcher = rememberLauncherForActivityResult(contract =
                 ActivityResultContracts.RequestPermission(), onResult = {})
             val repo = remember { Repository (viewModel) }
+            val navCtrl = NavHostController(context)
 
 
             WeatherAppTheme {
@@ -100,7 +102,7 @@ class MainActivity : ComponentActivity() {
                     Box(modifier = Modifier.padding(innerPadding)) {
                         launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         MainNavHost(navController = navController,
-                            viewModel = viewModel, context = context, repo = repo)
+                            viewModel = viewModel, context = context, repo = repo, navCtrl = navCtrl)
                     }
                 }
             }

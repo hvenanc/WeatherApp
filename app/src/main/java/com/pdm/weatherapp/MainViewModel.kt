@@ -16,10 +16,15 @@ import com.pdm.weatherapp.repo.Repository
 class MainViewModel : ViewModel(), Repository.Listener {
     private val _cities = mutableStateMapOf<String, City>()
     private val _user = mutableStateOf(User("Henrique", ""))
+    private var _city = mutableStateOf<City?>(null)
     val user : User
         get() = _user.value
     val cities : List<City>
         get() = _cities.values.toList()
+
+    var city: City?
+        get() = _city.value
+        set(tmp) {_city = mutableStateOf(tmp?.copy()) }
 
     private var _loggedIn = mutableStateOf(false)
     val loggedIn: Boolean
@@ -50,6 +55,10 @@ class MainViewModel : ViewModel(), Repository.Listener {
     override fun onCityUpdated(city: City) {
         _cities.remove(city.name)
         _cities[city.name] = city.copy()
+
+        if(_city.value?.name == city.name) {
+            _city.value = city.copy()
+        }
     }
 
 }

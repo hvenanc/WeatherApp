@@ -17,7 +17,8 @@ fun MainNavHost(
     navController: NavHostController,
     viewModel: MainViewModel,
     context: Context,
-    repo : Repository
+    repo : Repository,
+    navCtrl: NavHostController
 ) {
     NavHost(navController, startDestination = BottomNavItem.HomePage.route) {
 
@@ -26,7 +27,7 @@ fun MainNavHost(
         }
 
         composable(route = BottomNavItem.ListPage.route) {
-            ListPage(context = context, viewModel = viewModel, repo = repo)
+            ListPage(context = context, viewModel = viewModel, repo = repo, navCtrl = navCtrl)
         }
 
         composable(route = BottomNavItem.MapPage.route) {
