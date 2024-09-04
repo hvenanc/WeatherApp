@@ -59,7 +59,6 @@ class MainActivity : ComponentActivity() {
             val launcher = rememberLauncherForActivityResult(contract =
                 ActivityResultContracts.RequestPermission(), onResult = {})
             val repo = remember { Repository (viewModel) }
-            val navCtrl = NavHostController(context)
 
 
             WeatherAppTheme {
@@ -102,7 +101,7 @@ class MainActivity : ComponentActivity() {
                     Box(modifier = Modifier.padding(innerPadding)) {
                         launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         MainNavHost(navController = navController,
-                            viewModel = viewModel, context = context, repo = repo, navCtrl = navCtrl)
+                            viewModel = viewModel, context = context, repo = repo)
                     }
                 }
             }

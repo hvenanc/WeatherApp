@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pdm.weatherapp.MainViewModel
-import com.pdm.weatherapp.db.fb.FBDatabase
 import com.pdm.weatherapp.model.City
 import com.pdm.weatherapp.repo.Repository
 import com.pdm.weatherapp.ui.nav.BottomNavItem
@@ -39,7 +38,8 @@ fun ListPage(
     viewModel: MainViewModel,
     context: Context,
     repo : Repository,
-    navCtrl: NavHostController
+    navCtrl: NavHostController,
+    navController: NavHostController
 ) {
     val activity = LocalContext.current as? Activity
     val cityList = viewModel.cities
@@ -56,8 +56,8 @@ fun ListPage(
                 onClick = {
                     viewModel.city = city
                     repo.loadForecast(city)
-                    navCtrl.navigate(BottomNavItem.HomePage.route) {
-                        navCtrl.graph.startDestinationRoute?.let {
+                    navController.navigate(BottomNavItem.HomePage.route) {
+                        navController.graph.startDestinationRoute?.let {
                             popUpTo(it) { saveState = true}
                             restoreState = true
                         }
