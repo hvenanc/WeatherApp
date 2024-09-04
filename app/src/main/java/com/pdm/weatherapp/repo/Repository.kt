@@ -1,5 +1,6 @@
 package com.pdm.weatherapp.repo
 
+import android.graphics.Bitmap
 import com.google.android.gms.maps.model.LatLng
 import com.pdm.weatherapp.api.WeatherService
 import com.pdm.weatherapp.db.fb.FBDatabase
@@ -67,7 +68,13 @@ class Repository (private var listener: Listener) : FBDatabase.Listener {
             listener.onCityUpdated(city)
         }
     }
-    //Fiz um ajuste aqui
+
+    fun loadBitmap(city: City) {
+        weatherService.getBitmap(city.weather!!.imgUrl) {bitmap ->
+            city.weather!!.bitmap = bitmap
+            listener.onCityUpdated(city)
+        }
+    }
 
     fun remove(city: City) {
         fbDb.remove(city)
