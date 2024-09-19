@@ -1,7 +1,6 @@
-package com.pdm.weatherapp.ui.theme
+package com.pdm.weatherapp.ui.pages
 
 import android.app.Activity
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.pdm.weatherapp.LoginActivity
 import com.pdm.weatherapp.db.fb.FBDatabase
 import com.pdm.weatherapp.model.User
 

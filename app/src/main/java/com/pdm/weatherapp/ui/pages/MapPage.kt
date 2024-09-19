@@ -1,4 +1,4 @@
-package com.pdm.weatherapp.ui.theme
+package com.pdm.weatherapp.ui.pages
 
 import android.Manifest
 import android.content.Context
@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.scale
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings

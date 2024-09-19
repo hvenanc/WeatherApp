@@ -1,4 +1,4 @@
-package com.pdm.weatherapp.ui.theme
+package com.pdm.weatherapp.ui.pages
 
 import android.app.Activity
 import android.content.Intent

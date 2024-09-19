@@ -6,11 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pdm.weatherapp.MainViewModel
-import com.pdm.weatherapp.db.fb.FBDatabase
 import com.pdm.weatherapp.repo.Repository
-import com.pdm.weatherapp.ui.theme.HomePage
-import com.pdm.weatherapp.ui.theme.ListPage
-import com.pdm.weatherapp.ui.theme.MapPage
+import com.pdm.weatherapp.ui.pages.HomePage
+import com.pdm.weatherapp.ui.pages.ListPage
+import com.pdm.weatherapp.ui.pages.MapPage
 
 @Composable
 fun MainNavHost(

@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.pdm.weatherapp.ui.theme.LoginPage
+import com.pdm.weatherapp.ui.pages.LoginPage
 import com.pdm.weatherapp.ui.theme.WeatherAppTheme
 
 class LoginActivity : ComponentActivity() {
