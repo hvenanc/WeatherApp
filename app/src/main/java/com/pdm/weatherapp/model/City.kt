@@ -10,5 +10,6 @@ data class City(
     var forecast: List<Forecast>? = null,
     var location: LatLng? = null,
     val imgUrl: String? = null,
-    val bitmap: Bitmap? = null
+    val bitmap: Bitmap? = null,
+    var isMonitored: Boolean? = false
 )

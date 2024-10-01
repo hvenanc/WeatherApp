@@ -54,13 +54,20 @@ class MainViewModel : ViewModel(), Repository.Listener {
         _cities.remove(city.name)
     }
 
+    override fun onUserSignOut() {
+        TODO("Not yet implemented")
+    }
+
     override fun onCityUpdated(city: City) {
         _cities.remove(city.name)
         _cities[city.name] = city.copy()
-
-        if(_city.value?.name == city.name) {
-            _city.value = city.copy()
+        if (_city.value?.name == city.name) {
+            _city.value = city.copy(
+                weather = if (city.weather != null) city.weather
+                else _city.value?.weather,
+                forecast = if (city.forecast != null) city.forecast
+                else _city.value?.forecast
+            )
         }
     }
-
 }

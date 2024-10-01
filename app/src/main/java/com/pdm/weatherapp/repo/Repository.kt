@@ -20,6 +20,7 @@ class Repository (private var listener: Listener) : FBDatabase.Listener {
         fun onUserLoaded(user: User)
         fun onCityAdded(city: City)
         fun onCityRemoved(city: City)
+        fun onUserSignOut()
     }
 
     fun addCity(name: String) {
@@ -84,6 +85,10 @@ class Repository (private var listener: Listener) : FBDatabase.Listener {
         fbDb.register(User(userName, email))
     }
 
+    fun update(city: City) {
+        fbDb.update(city)
+    }
+
     override fun onUserLoaded(user: User) {
         listener.onUserLoaded(user)
     }
@@ -94,5 +99,13 @@ class Repository (private var listener: Listener) : FBDatabase.Listener {
 
     override fun onCityRemoved(city: City) {
         listener.onCityRemoved(city)
+    }
+
+    override fun onUserSignOut() {
+        listener.onUserSignOut()
+    }
+
+    override fun onCityUpdated(city: City) {
+        listener.onCityUpdated(city)
     }
 }

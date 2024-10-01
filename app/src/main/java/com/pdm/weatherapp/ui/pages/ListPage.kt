@@ -15,6 +15,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import com.pdm.weatherapp.R
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -54,7 +57,14 @@ fun ListPage(
             if (city.weather == null) {
                 repo.loadWeather(city)
             }
-            CityItem(city = city,
+            val icon: ImageVector = if(city.isMonitored == true) {
+                Icons.Outlined.Favorite
+            } else {
+                Icons.Outlined.FavoriteBorder
+            }
+            CityItem(
+                city = city,
+                    icon = icon,
                 onClick = {
                     viewModel.city = city
                     repo.loadForecast(city)
@@ -78,10 +88,12 @@ fun ListPage(
 
 @Composable
 fun CityItem(
-    city : City,
-    onClick : () -> Unit,
-    onClose : () -> Unit,
-    modifier: Modifier = Modifier
+    city: City,
+    onClick: () -> Unit,
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
+    icon: ImageVector = Icons.Outlined.Favorite
+
 ) {
     Row(
         modifier = Modifier
@@ -98,11 +110,19 @@ fun CityItem(
         )
         Spacer(modifier = Modifier.size(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(
-                modifier = Modifier,
-                text = city.name,
-                fontSize = 24.sp
-            )
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = "Monitoramento",
+                    modifier = Modifier.size(24.dp) // Ajuste o tamanho se necessário
+                )
+                Text(
+                    modifier = Modifier,
+                    text = city.name,
+                    fontSize = 24.sp
+                )
+            }
+
             Text(
                 modifier = Modifier,
                 text = city.weather?.desc?:"carregando...",
